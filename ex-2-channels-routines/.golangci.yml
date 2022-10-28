@@ -1,0 +1,28 @@
+run:
+  tests: false
+  skip-dirs:
+    - solution
+  modules-download-mode: readonly
+linters:
+  disable-all: true
+  enable:
+    - bodyclose
+    - dogsled
+    - errcheck
+    - goconst
+    - gocyclo
+    - godot
+    - godox
+    - gofmt
+    - gosimple
+    - govet
+    - importas
+    - ineffassign
+    - misspell
+    - revive
+    - rowserrcheck
+    - sqlclosecheck
+    - staticcheck
+    - stylecheck
+    - typecheck
+    - unused

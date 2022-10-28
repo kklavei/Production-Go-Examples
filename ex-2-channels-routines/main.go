@@ -12,12 +12,19 @@ import (
 var numWords int
 
 func runWorkerPool(ch chan string, wg *sync.WaitGroup, numWorkers int) {
-	// TODO: add code here
+	wg.Add(numWorkers)
+	for i := 0; i < numWorkers; i++ {
+		go func() {
+			defer wg.Done()
+			worker(ch, wg)
+		}()
+	}
+	wg.Wait()
 }
 
-// getMessages gets a slice of messages to process
+// getMessages gets a slice of messages to process.
 func getMessages() []string {
-	file, _ := os.ReadFile("datums/melville-moby_dick.txt")
+	file, _ := os.ReadFile("../datums/melville-moby_dick.txt")
 	words := strings.Split(string(file), " ")
 	return words
 }
@@ -32,16 +39,14 @@ func queueMessages(ch chan string) {
 
 	// close the worker channel and signal there won't be any more data
 	close(ch)
-
 }
 
 func worker(ch chan string, wg *sync.WaitGroup) {
 	var mu sync.Mutex
 
 	for word := range ch {
-
 		if strings.Contains(word, "whal") {
-			// print msg
+			//fmt.Printf("%s\n", word)
 			mu.Lock()
 			numWords++
 			mu.Unlock()
@@ -60,5 +65,5 @@ func main() {
 	// we already know the number of workers, we can increase the WaitGroup once
 	go queueMessages(ch)
 	runWorkerPool(ch, wg, *numWorkers)
-	fmt.Printf("Number of words: %d\nTime to process file: %2f seconds", numWords, time.Since(startTime).Seconds())
+	fmt.Printf("Number of words: %d\nTime to process file: %2f seconds\n", numWords, time.Since(startTime).Seconds())
 }
