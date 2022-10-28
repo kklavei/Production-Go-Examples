@@ -15,3 +15,6 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 /.vscode
+
+/ex-4-benchmarking/cpu.prof
+/ex-4-benchmarking/mem.prof
